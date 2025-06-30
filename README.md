@@ -1,1 +1,3 @@
-# Summer-Practice
+Белаид Фарук 3342 - @faroukbelaid
+Какира Умар Нура 3343 - @kkumvr
+Лысиков Михаил 3383 - @Abc07249
