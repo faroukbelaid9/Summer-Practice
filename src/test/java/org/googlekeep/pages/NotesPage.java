@@ -212,4 +212,79 @@ public class NotesPage extends BasePage {
     private List<WebElement> getAllNoteCards() {
         return driver.findElements(By.xpath("//div[contains(@class,'IZ65Hb-n0tgWb')]"));
     }
+
+    public void addLabelToNoteByTitle(String title, String label) {
+        NoteCardComponent note = getNoteByTitle(title);
+        if (note != null) {
+            note.openMoreMenu();
+    
+            WebElement addLabelOption = wait.until(ExpectedConditions
+                    .visibilityOfElementLocated(By.xpath("//div[@role='menuitem'][.//div[contains(text(),'Add label')]]")));
+            addLabelOption.click();
+    
+            WebElement labelInput = wait.until(ExpectedConditions
+                    .visibilityOfElementLocated(By.xpath("//input[@aria-label='Enter label name']")));
+            labelInput.clear();
+            labelInput.sendKeys(label);
+            labelInput.sendKeys(Keys.ENTER);
+    
+            // Закрытие меню
+            labelInput.sendKeys(Keys.ESCAPE);
+        }
+    }
+    
+    public boolean isLabelAttached(String title, String label) {
+        NoteCardComponent note = getNoteByTitle(title);
+        if (note != null) {
+            try {
+                WebElement labelChip = note.getElement()
+                        .findElement(By.xpath(".//div[contains(@class,'bQfzdd') and contains(text(),'" + label + "')]"));
+                return labelChip.isDisplayed();
+            } catch (NoSuchElementException e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public void createChecklistNote(String title, String[] items) {
+        newNoteInput.click();
+    
+        // Включаем режим чек-листа
+        WebElement checklistToggle = wait.until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//div[@aria-label='New list']")));
+        checklistToggle.click();
+    
+        // Ввод заголовка
+        wait.until(ExpectedConditions.visibilityOf(titleField));
+        titleField.sendKeys(title);
+    
+        // Ввод каждого элемента чек-листа
+        for (String item : items) {
+            WebElement inputField = wait.until(ExpectedConditions
+                    .visibilityOfElementLocated(By.xpath("//div[@aria-label='List item']")));
+            inputField.sendKeys(item);
+            inputField.sendKeys(Keys.ENTER);
+        }
+    
+        // Закрытие заметки
+        closeNoteBtn.click();
+        waitUntilNoteAppears(title);
+    }
+
+    public boolean isChecklistPresent(String title, String[] items) {
+        NoteCardComponent note = getNoteByTitle(title);
+        if (note != null) {
+            try {
+                for (String item : items) {
+                    note.getElement().findElement(
+                            By.xpath(".//div[contains(@class,'e5WBfd') and contains(text(),'" + item + "')]"));
+                }
+                return true;
+            } catch (NoSuchElementException e) {
+                return false;
+            }
+        }
+        return false;
+    }
 }
