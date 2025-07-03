@@ -2,10 +2,14 @@ package org.googlekeep.tests;
 
 import org.googlekeep.BaseTest;
 import org.googlekeep.pages.NotesPage;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import static org.testng.Assert.*;
+
+/**
+ * Test suite for Google Keep note operations.
+ */
 public class NotesTest extends BaseTest {
     private NotesPage notesPage;
     private final String TEST_NOTE_TITLE = "Test Note " + System.currentTimeMillis();
@@ -22,8 +26,7 @@ public class NotesTest extends BaseTest {
         Thread.sleep(2000);
         int initialCount = notesPage.getCurrentNoteCount();
         notesPage.createEmptyNote();
-        assertFalse(notesPage.isNoteSaved(initialCount),
-                "Empty note shouldn't be saved");
+        assertFalse(notesPage.isNoteSaved(initialCount), "Empty note shouldn't be saved");
     }
 
     @Test(priority = 2)
@@ -43,7 +46,7 @@ public class NotesTest extends BaseTest {
     }
 
     @Test(priority = 4)
-    public void testUndoDelete() {
+    public void testUndoDelete() throws InterruptedException {
         notesPage.createNote(TEST_NOTE_TITLE);
         int initialCount = notesPage.getCurrentNoteCount();
         notesPage.deleteNoteByTitle(TEST_NOTE_TITLE, true);
@@ -52,7 +55,7 @@ public class NotesTest extends BaseTest {
     }
 
     @Test(priority = 5)
-    public void testDeleteNote() {
+    public void testDeleteNote() throws InterruptedException {
         notesPage.createNote(TEST_NOTE_TITLE);
         int initialCount = notesPage.getCurrentNoteCount();
         notesPage.deleteNoteByTitle(TEST_NOTE_TITLE, false);
@@ -62,7 +65,7 @@ public class NotesTest extends BaseTest {
     }
 
     @Test(priority = 6)
-    public void testAddLabelToNote() {
+    public void testAddLabelToNote() throws InterruptedException {
         notesPage.createNote(TEST_NOTE_TITLE);
         notesPage.addLabelToNoteByTitle(TEST_NOTE_TITLE, TEST_LABEL);
         Thread.sleep(2000);
@@ -71,7 +74,7 @@ public class NotesTest extends BaseTest {
     }
 
     @Test(priority = 7)
-    public void testAddChecklistToNote() {
+    public void testAddChecklistToNote() throws InterruptedException {
         notesPage.createChecklistNote(TEST_NOTE_TITLE, CHECKLIST_ITEMS);
         Thread.sleep(2000);
         assertTrue(notesPage.isChecklistPresent(TEST_NOTE_TITLE, CHECKLIST_ITEMS),
