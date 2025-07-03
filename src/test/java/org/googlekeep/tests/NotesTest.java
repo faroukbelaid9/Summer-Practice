@@ -9,6 +9,8 @@ import org.testng.annotations.Test;
 public class NotesTest extends BaseTest {
     private NotesPage notesPage;
     private final String TEST_NOTE_TITLE = "Test Note " + System.currentTimeMillis();
+    private final String TEST_LABEL = "TestLabel";
+    private final String[] CHECKLIST_ITEMS = {"Item 1", "Item 2", "Item 3"};
 
     @BeforeMethod
     public void setup() {
@@ -45,6 +47,34 @@ public class NotesTest extends BaseTest {
         notesPage.createNote(TEST_NOTE_TITLE);
         int initialCount = notesPage.getCurrentNoteCount();
         notesPage.deleteNoteByTitle(TEST_NOTE_TITLE, true);
+        Thread.sleep(2000);
         Assert.assertEquals(notesPage.getCurrentNoteCount(), initialCount);
+    }
+
+    @Test(priority = 5)
+    public void testDeleteNote() {
+        notesPage.createNote(TEST_NOTE_TITLE);
+        int initialCount = notesPage.getCurrentNoteCount();
+        notesPage.deleteNoteByTitle(TEST_NOTE_TITLE, false);
+        Thread.sleep(2000);
+        Assert.assertEquals(notesPage.getCurrentNoteCount(), initialCount - 1,
+                "Note should be removed from visible notes after deletion");
+    }
+
+    @Test(priority = 6)
+    public void testAddLabelToNote() {
+        notesPage.createNote(TEST_NOTE_TITLE);
+        notesPage.addLabelToNoteByTitle(TEST_NOTE_TITLE, TEST_LABEL);
+        Thread.sleep(2000);
+        Assert.assertTrue(notesPage.isLabelAttached(TEST_NOTE_TITLE, TEST_LABEL),
+                "Label should be attached to the note");
+    }
+
+    @Test(priority = 7)
+    public void testAddChecklistToNote() {
+        notesPage.createChecklistNote(TEST_NOTE_TITLE, CHECKLIST_ITEMS);
+        Thread.sleep(2000);
+        Assert.assertTrue(notesPage.isChecklistPresent(TEST_NOTE_TITLE, CHECKLIST_ITEMS),
+                "Checklist items should be present in the created note");
     }
 }
