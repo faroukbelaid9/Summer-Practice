@@ -22,7 +22,7 @@ public class NotesTest extends BaseTest {
         Thread.sleep(2000);
         int initialCount = notesPage.getCurrentNoteCount();
         notesPage.createEmptyNote();
-        Assert.assertFalse(notesPage.isNoteSaved(initialCount),
+        assertFalse(notesPage.isNoteSaved(initialCount),
                 "Empty note shouldn't be saved");
     }
 
@@ -31,7 +31,7 @@ public class NotesTest extends BaseTest {
         notesPage.createNote(TEST_NOTE_TITLE);
         notesPage.pinNoteByTitle(TEST_NOTE_TITLE);
         Thread.sleep(2000);
-        Assert.assertTrue(notesPage.isNotePinned(TEST_NOTE_TITLE));
+        assertTrue(notesPage.isNotePinned(TEST_NOTE_TITLE));
     }
 
     @Test(priority = 3)
@@ -39,7 +39,7 @@ public class NotesTest extends BaseTest {
         notesPage.createNote(TEST_NOTE_TITLE);
         notesPage.archiveNoteByTitle(TEST_NOTE_TITLE);
         Thread.sleep(2000);
-        Assert.assertTrue(notesPage.isNoteArchived(TEST_NOTE_TITLE));
+        assertTrue(notesPage.isNoteArchived(TEST_NOTE_TITLE));
     }
 
     @Test(priority = 4)
@@ -48,7 +48,7 @@ public class NotesTest extends BaseTest {
         int initialCount = notesPage.getCurrentNoteCount();
         notesPage.deleteNoteByTitle(TEST_NOTE_TITLE, true);
         Thread.sleep(2000);
-        Assert.assertEquals(notesPage.getCurrentNoteCount(), initialCount);
+        assertEquals(notesPage.getCurrentNoteCount(), initialCount);
     }
 
     @Test(priority = 5)
@@ -57,7 +57,7 @@ public class NotesTest extends BaseTest {
         int initialCount = notesPage.getCurrentNoteCount();
         notesPage.deleteNoteByTitle(TEST_NOTE_TITLE, false);
         Thread.sleep(2000);
-        Assert.assertEquals(notesPage.getCurrentNoteCount(), initialCount - 1,
+        assertEquals(notesPage.getCurrentNoteCount(), initialCount - 1,
                 "Note should be removed from visible notes after deletion");
     }
 
@@ -66,7 +66,7 @@ public class NotesTest extends BaseTest {
         notesPage.createNote(TEST_NOTE_TITLE);
         notesPage.addLabelToNoteByTitle(TEST_NOTE_TITLE, TEST_LABEL);
         Thread.sleep(2000);
-        Assert.assertTrue(notesPage.isLabelAttached(TEST_NOTE_TITLE, TEST_LABEL),
+        assertTrue(notesPage.isLabelAttached(TEST_NOTE_TITLE, TEST_LABEL),
                 "Label should be attached to the note");
     }
 
@@ -74,7 +74,7 @@ public class NotesTest extends BaseTest {
     public void testAddChecklistToNote() {
         notesPage.createChecklistNote(TEST_NOTE_TITLE, CHECKLIST_ITEMS);
         Thread.sleep(2000);
-        Assert.assertTrue(notesPage.isChecklistPresent(TEST_NOTE_TITLE, CHECKLIST_ITEMS),
+        assertTrue(notesPage.isChecklistPresent(TEST_NOTE_TITLE, CHECKLIST_ITEMS),
                 "Checklist items should be present in the created note");
     }
 }
