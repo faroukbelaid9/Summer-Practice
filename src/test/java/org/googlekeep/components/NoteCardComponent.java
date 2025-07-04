@@ -37,4 +37,8 @@ public class NoteCardComponent extends BaseComponent {
         root.findElement(By.xpath("//div[@role='menu']//div[text()='Delete note']"))
                 .click();
     }
+    
+    public WebElement getElement() {
+        return root;
+    }
 }
