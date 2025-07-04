@@ -80,4 +80,48 @@ public class NotesTest extends BaseTest {
         assertTrue(notesPage.isChecklistPresent(TEST_NOTE_TITLE, CHECKLIST_ITEMS),
                 "Checklist items should be present in the created note");
     }
+
+    @Test(priority = 8)
+    public void testEditNote() {
+        String updatedTitle = TEST_NOTE_TITLE + " - Updated";
+
+        // 1. Create the original note
+        notesPage.createNote(TEST_NOTE_TITLE);
+
+        // 2. Edit the note title
+        notesPage.editNoteTitle(TEST_NOTE_TITLE, updatedTitle);
+
+        // 4. Validate the updated title is present
+        assertTrue(notesPage.isNotePresent(updatedTitle), "Updated note title not found");
+    }
+
+    @Test(priority = 9)
+    public void testSearchNoteByTitle() throws InterruptedException {
+        // Create a unique note
+        String searchTitle = "Searchable Note " + System.currentTimeMillis();
+        notesPage.createNote(searchTitle);
+
+        // Perform search
+        notesPage.searchNoteByTitle(searchTitle);
+        Thread.sleep(2000); // Give some time for the UI to settle
+
+        // Validate the note appears in search results
+        assertTrue(notesPage.isNotePresent(searchTitle), "Searched note should be visible in search results");
+    }
+
+    @Test(priority = 10)
+    public void testChangeNoteColor() {
+        // Create a test note
+        String colorTestNote = "Color Test " + System.currentTimeMillis();
+        notesPage.createNote(colorTestNote);
+
+        // Change to red
+        notesPage.changeNoteColor(colorTestNote, "red");
+
+        // Add a small delay to see the change (optional)
+        try { Thread.sleep(1000); } catch (InterruptedException e) {}
+
+        // Change to default (white)
+        notesPage.changeNoteColor(colorTestNote, "default");
+    }
 }

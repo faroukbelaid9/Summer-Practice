@@ -287,4 +287,88 @@ public class NotesPage extends BasePage {
         }
         return false;
     }
+
+    public void editNoteTitle(String currentTitle, String newTitle) {
+        NoteCardComponent note = getNoteByTitle(currentTitle);
+        if (note != null) {
+            note.open();
+
+            String xpath = String.format(
+                    "//div[contains(@class,'IZ65Hb-r4nke-haAclf')]//div[@contenteditable='true' and text()='%s']",
+                    currentTitle
+            );
+            WebElement titleInput = new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
+
+            titleInput.clear();
+            titleInput.sendKeys(newTitle);
+
+            WebElement closeButton = new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.elementToBeClickable(
+                            By.xpath("//div[contains(@class, 'IZ65Hb-yePe5c')]//div[@role='button' and normalize-space(text())='Close']")
+                    ));
+
+            closeButton.click();
+        }
+
+/*
+        // Open the note by title
+        WebElement noteCard = driver.findElement(NoteCardComponent.byNoteCardTitle(currentTitle));
+        noteCard.click();
+
+        // Wait for the title field to be clickable
+        WebElement titleInput = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(
+                        By.xpath("//div[@role='dialog']//div[contains(@class,'IZ65Hb-r4nke-haAclf')]//div[@contenteditable='true']")
+                ));
+
+        // Edit the title
+        titleInput.click();
+        titleInput.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        titleInput.sendKeys(Keys.BACK_SPACE);
+        titleInput.sendKeys(newTitle);
+
+        // Close the dialog to save
+        WebElement closeBtn = new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.elementToBeClickable(
+                        By.xpath("//div[@role='dialog']//div[text()='Close']")
+                ));
+        closeBtn.click();
+
+        // Wait for the updated title to appear
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.presenceOfElementLocated(
+                        NoteCardComponent.byNoteCardTitle(newTitle)));
+                        */
+    }
+
+
+    /**
+     * Checks if a note with the given title is present on the page.
+     *
+     * @param title Title or content to match.
+     * @return true if found, false otherwise.
+     */
+    public boolean isNotePresent(String title) {
+        return !driver.findElements(NoteCardComponent.byNoteCardTitle(title)).isEmpty();
+    }
+
+    public void searchNoteByTitle(String title) {
+        WebElement searchInput = wait.until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//input[@aria-label='Search']")));
+        searchInput.click();
+        searchInput.sendKeys(title);
+        searchInput.sendKeys(Keys.ENTER);
+
+        // Wait for results to load
+        wait.until(ExpectedConditions.presenceOfElementLocated(NoteCardComponent.byNoteCardTitle(title)));
+    }
+    // Reopen note by title
+
+    public void changeNoteColor(String title, String color) {
+        NoteCardComponent note = getNoteByTitle(title);
+        if (note != null) {
+            note.changeColorTo(color);
+        }
+    }
 }
