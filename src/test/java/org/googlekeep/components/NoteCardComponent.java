@@ -1,8 +1,13 @@
 package org.googlekeep.components;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 /**
  * Component representing a single note card in Google Keep.
@@ -40,5 +45,24 @@ public class NoteCardComponent extends BaseComponent {
     
     public WebElement getElement() {
         return root;
+    }
+
+    public void updateTitle(String newTitle) {
+        root.findElement(By.xpath("//div[@role='textbox']")).sendKeys(newTitle);
+    }
+
+    public void open(){
+        root.click();
+    }
+
+    public void changeColorTo(String colorName) {
+        // Click the background options button
+        WebElement colorBtn = root.findElement(By.xpath(".//div[@aria-label='Background options']"));
+        colorBtn.click();
+
+        // Select the color (using a simple color mapping)
+        String colorLabel = colorName.equals("default") ? "Default color" : colorName.substring(0, 1).toUpperCase() + colorName.substring(1);
+        WebElement colorOption = root.findElement(By.xpath(String.format(".//div[@role='menu']//div[@aria-label='%s']", colorLabel)));
+        colorOption.click();
     }
 }
