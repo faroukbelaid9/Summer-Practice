@@ -14,7 +14,6 @@ public class BaseTest {
     protected WebDriver driver;
     protected WebDriverWait wait;
 
-    protected static final Duration PAGE_LOAD_TIMEOUT = Duration.ofSeconds(30);
     protected static final Duration IMPLICIT_WAIT = Duration.ofSeconds(5);
     protected static final Duration EXPLICIT_WAIT = Duration.ofSeconds(20);
 
@@ -72,7 +71,7 @@ public class BaseTest {
     @AfterMethod
     public void tearDown() {
         if (driver != null) {
-            driver.quit();
+            //driver.quit();
         }
     }
 }

@@ -62,7 +62,7 @@ public class NoteCardComponent extends BaseComponent {
 
         // Select the color (using a simple color mapping)
         String colorLabel = colorName.equals("default") ? "Default color" : colorName.substring(0, 1).toUpperCase() + colorName.substring(1);
-        WebElement colorOption = root.findElement(By.xpath(String.format(".//div[@role='menu']//div[@aria-label='%s']", colorLabel)));
+        WebElement colorOption = root.findElement(By.xpath(String.format(".//div[@aria-label='%s']", colorLabel)));
         colorOption.click();
     }
 }
