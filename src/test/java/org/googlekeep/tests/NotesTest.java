@@ -91,7 +91,7 @@ public class NotesTest extends BaseTest {
         notesPage.editNoteTitle(TEST_NOTE_TITLE, updatedTitle);
 
         // 4. Validate the updated title is present
-        //(notesPage.isNotePresent(updatedTitle), "Updated note title not found");
+        assertTrue(notesPage.isNotePresent(updatedTitle), "Updated note title not found");
     }
 
     @Test(priority = 9)
@@ -99,11 +99,8 @@ public class NotesTest extends BaseTest {
         // Create a unique note
         String searchTitle = "Searchable Note " + System.currentTimeMillis();
         notesPage.createNote(searchTitle);
-
         // Perform search
         notesPage.searchNoteByTitle(searchTitle);
-        Thread.sleep(2000); // Give some time for the UI to settle
-
         // Validate the note appears in search results
         assertTrue(notesPage.isNotePresent(searchTitle), "Searched note should be visible in search results");
     }
@@ -117,5 +114,7 @@ public class NotesTest extends BaseTest {
         notesPage.changeNoteColor(colorTestNote, "Coral");
         // Change to default (white)
         notesPage.changeNoteColor(colorTestNote, "default");
+
+        assertTrue(notesPage.isNotePresent(colorTestNote), "Changed note color not found");
     }
 }
